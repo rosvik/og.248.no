@@ -1,11 +1,8 @@
 mod cache;
 
 use axum::{
-    extract::Query,
-    http::{HeaderMap, StatusCode},
-    response::IntoResponse,
-    routing::get,
-    Error, Extension, Json, Router,
+    extract::Query, http::StatusCode, response::IntoResponse, routing::get, Error, Extension, Json,
+    Router,
 };
 use cache::OpengraphCache;
 use serde::{Deserialize, Serialize};
@@ -43,23 +40,19 @@ async fn get_opengraph_tags(
     let cache_hit = cache.lock().await.get_from_cache(&url);
     if let Some(tags) = cache_hit {
         println!("Cache hit for {}", &url);
-        return (StatusCode::OK, HeaderMap::new(), Json(tags));
+        return (StatusCode::OK, Json(tags));
     }
     let tags = match fetch_opengraph_tags(url.clone()).await {
         Ok(tags) => tags,
         Err(e) => {
             eprintln!("Error fetching opengraph tags for {url}: {e:?}");
-            return (
-                StatusCode::INTERNAL_SERVER_ERROR,
-                HeaderMap::new(),
-                Json(Vec::new()),
-            );
+            return (StatusCode::INTERNAL_SERVER_ERROR, Json(Vec::new()));
         }
     };
 
     // FIXME: This should be fire and forget
     cache.lock().await.add_to_cache(url, tags.clone());
-    (StatusCode::OK, HeaderMap::new(), Json(tags))
+    (StatusCode::OK, Json(tags))
 }
 
 async fn fetch_opengraph_tags(url: String) -> Result<Vec<OpengraphTag>, Error> {
