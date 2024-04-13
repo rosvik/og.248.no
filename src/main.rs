@@ -1,8 +1,11 @@
 mod cache;
 
 use axum::{
-    extract::Query, http::StatusCode, response::IntoResponse, routing::get, Error, Extension, Json,
-    Router,
+    extract::Query,
+    http::StatusCode,
+    response::{Html, IntoResponse},
+    routing::get,
+    Error, Extension, Json, Router,
 };
 use cache::OpengraphCache;
 use serde::{Deserialize, Serialize};
@@ -14,7 +17,8 @@ use tokio::{net::TcpListener, sync::Mutex};
 async fn main() {
     let cache = Arc::new(Mutex::new(cache::OpengraphCache::new(100_000)));
     let app = Router::new()
-        .route("/", get(get_opengraph_tags))
+        .route("/", get(index))
+        .route("/api", get(get_opengraph_tags))
         .route("/status", get(get_status))
         .layer(Extension(cache));
     let addr = SocketAddr::from(([127, 0, 0, 1], 2340));
@@ -27,6 +31,10 @@ async fn main() {
 pub struct OpengraphTag {
     property: String,
     content: String,
+}
+
+async fn index() -> Html<&'static str> {
+    Html(include_str!("../templates/index.html"))
 }
 
 #[derive(Deserialize)]
