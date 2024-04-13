@@ -19,7 +19,7 @@ async fn main() {
     let app = Router::new()
         .route("/", get(get_opengraph_tags))
         .layer(Extension(cache));
-    let addr = SocketAddr::from(([127, 0, 0, 1], 2339));
+    let addr = SocketAddr::from(([127, 0, 0, 1], 2340));
     let listener = TcpListener::bind(addr).await.unwrap();
     println!("Listening on http://{}", addr);
     axum::serve(listener, app).await.unwrap();
