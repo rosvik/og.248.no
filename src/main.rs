@@ -56,13 +56,10 @@ fn extract_opengraph_tag(node: NodeHandle, parser: &Parser) -> Option<OpengraphT
         if !property.starts_with("og:") {
             return None;
         }
-        let content = dom_tag
-            .attributes()
-            .get("content")
-            .expect("content attribute is unset")
-            .expect("content is empty")
-            .as_utf8_str()
-            .into_owned();
+        let content = match dom_tag.attributes().get("content") {
+            Some(Some(content)) => content.as_utf8_str().into_owned(),
+            _ => String::new(),
+        };
         return Some(OpengraphTag { property, content });
     }
     None
