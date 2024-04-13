@@ -18,4 +18,14 @@ impl OpengraphCache {
     pub fn get_from_cache(&self, url: &str) -> Option<Vec<crate::OpengraphTag>> {
         self.cache.get(url).cloned()
     }
+
+    pub fn get_status(&self) -> String {
+        let len = self.cache.len();
+        let weight = self.cache.weight();
+        let capacity = self.cache.capacity();
+        format!(
+            "Number of cached items: {}\nTotal cache weight: {}\nCapacity (maximum weight of cached items): {}\n",
+            len, weight, capacity
+        )
+    }
 }

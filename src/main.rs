@@ -15,6 +15,7 @@ async fn main() {
     let cache = Arc::new(Mutex::new(cache::OpengraphCache::new(100_000)));
     let app = Router::new()
         .route("/", get(get_opengraph_tags))
+        .route("/status", get(get_status))
         .layer(Extension(cache));
     let addr = SocketAddr::from(([127, 0, 0, 1], 2340));
     let listener = TcpListener::bind(addr).await.unwrap();
@@ -53,6 +54,13 @@ async fn get_opengraph_tags(
     // FIXME: This should be fire and forget
     cache.lock().await.add_to_cache(url, tags.clone());
     (StatusCode::OK, Json(tags))
+}
+
+async fn get_status(
+    cache: axum::extract::Extension<Arc<Mutex<OpengraphCache>>>,
+) -> impl IntoResponse {
+    let stats = cache.lock().await.get_status();
+    (StatusCode::OK, stats)
 }
 
 async fn fetch_opengraph_tags(url: String) -> Result<Vec<OpengraphTag>, Error> {
