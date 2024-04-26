@@ -26,7 +26,7 @@ pub fn extract_opengraph_tag(node: NodeHandle, parser: &Parser) -> Option<Opengr
     let dom_tag = node.as_tag()?;
     if let Some(Some(property)) = dom_tag.attributes().get("property") {
         let property = property.as_utf8_str().to_string();
-        if !property.starts_with("og:") {
+        if !property.starts_with("og:") && !property.starts_with("twitter:") {
             return None;
         }
         let content = match dom_tag.attributes().get("content") {
