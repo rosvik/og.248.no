@@ -22,7 +22,7 @@ async fn main() {
         .route("/api", get(get_opengraph_tags))
         .route("/status", get(get_status))
         .layer(Extension(cache));
-    let addr = SocketAddr::from(([127, 0, 0, 1], 2340));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 2340));
     let listener = TcpListener::bind(addr).await.unwrap();
     println!("Listening on http://{}", addr);
     axum::serve(listener, app).await.unwrap();
