@@ -3,7 +3,7 @@
 FROM rust:1.81-alpine3.20 as builder
 # see https://github.com/rust-lang/docker-rust/issues/85
 ENV RUSTFLAGS="-C target-feature=-crt-static"
-RUN apk add --no-cache musl-dev
+RUN apk add --no-cache musl-dev openssl-dev
 WORKDIR /app
 COPY ./ /app
 RUN cargo build --release
