@@ -24,7 +24,7 @@ async fn main() {
         .layer(Extension(cache));
     let addr = SocketAddr::from(([0, 0, 0, 0], 2340));
     let listener = TcpListener::bind(addr).await.unwrap();
-    println!("Listening on http://{}", addr);
+    println!("Listening on http://{addr}");
     axum::serve(listener, app).await.unwrap();
 }
 
@@ -49,7 +49,7 @@ async fn get_opengraph_tags(
     let url = query.url;
     let cache_hit = cache.lock().await.get_from_cache(&url);
     if let Some(tags) = cache_hit {
-        println!("Cache hit for {}", &url);
+        println!("Cache hit for {url}");
         return (StatusCode::OK, Json(tags));
     }
     let tags = match fetch_opengraph_tags(url.clone()).await {

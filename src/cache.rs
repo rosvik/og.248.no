@@ -24,8 +24,7 @@ impl OpengraphCache {
         let weight = self.cache.weight();
         let capacity = self.cache.capacity();
         format!(
-            "Number of cached items: {}\nTotal cache weight: {}\nCapacity (maximum weight of cached items): {}\n",
-            len, weight, capacity
+            "Number of cached items: {len}\nTotal cache weight: {weight}\nCapacity (maximum weight of cached items): {capacity}\n",
         )
     }
 }

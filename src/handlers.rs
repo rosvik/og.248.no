@@ -3,7 +3,7 @@ use anyhow::Result;
 use tl::{NodeHandle, Parser};
 
 pub async fn fetch_opengraph_tags(url: String) -> Result<Vec<OpengraphTag>> {
-    println!("Fetching tags for {}", &url);
+    println!("Fetching tags for {url}");
 
     let result = reqwest::get(&url).await?;
     let data = result.text().await?;
