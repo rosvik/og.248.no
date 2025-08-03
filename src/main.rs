@@ -63,7 +63,7 @@ async fn get_opengraph_tags(
     // Fire and forget cache addition
     let tags_clone = tags.clone();
     tokio::spawn(async move {
-        cache.lock().await.add_to_cache(url.clone(), tags_clone);
+        cache.lock().await.add_to_cache(url, tags_clone);
     });
 
     (StatusCode::OK, Json(tags))
