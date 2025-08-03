@@ -60,8 +60,12 @@ async fn get_opengraph_tags(
         }
     };
 
-    // FIXME: This should be fire and forget
-    cache.lock().await.add_to_cache(url, tags.clone());
+    // Fire and forget cache addition
+    let tags_clone = tags.clone();
+    tokio::spawn(async move {
+        cache.lock().await.add_to_cache(url.clone(), tags_clone);
+    });
+
     (StatusCode::OK, Json(tags))
 }
 
