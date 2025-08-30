@@ -26,14 +26,31 @@ pub fn extract_opengraph_tag(node: NodeHandle, parser: &Parser) -> Option<Opengr
     let dom_tag = node.as_tag()?;
     if let Some(Some(property)) = dom_tag.attributes().get("property") {
         let property = property.as_utf8_str().to_string();
-        if !property.starts_with("og:") && !property.starts_with("twitter:") {
-            return None;
+
+        // E.g. `<meta property="og:title" content="Hello world" />`
+        if property.starts_with("og:") {
+            let content = match dom_tag.attributes().get("content") {
+                Some(Some(content)) => content.as_utf8_str().into_owned(),
+                _ => String::new(),
+            };
+            return Some(OpengraphTag { property, content });
         }
-        let content = match dom_tag.attributes().get("content") {
-            Some(Some(content)) => content.as_utf8_str().into_owned(),
-            _ => String::new(),
-        };
-        return Some(OpengraphTag { property, content });
+    }
+
+    if let Some(Some(name)) = dom_tag.attributes().get("name") {
+        let name = name.as_utf8_str().to_string();
+
+        // E.g. `<meta name="twitter:title" content="Hello world" />`
+        if name.starts_with("twitter:") {
+            let content = match dom_tag.attributes().get("content") {
+                Some(Some(content)) => content.as_utf8_str().into_owned(),
+                _ => String::new(),
+            };
+            return Some(OpengraphTag {
+                property: name,
+                content,
+            });
+        }
     }
     None
 }
