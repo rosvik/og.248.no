@@ -28,7 +28,8 @@ pub fn extract_opengraph_tag(node: NodeHandle, parser: &Parser) -> Option<Opengr
         let property = property.as_utf8_str().to_string();
 
         // E.g. `<meta property="og:title" content="Hello world" />`
-        if property.starts_with("og:") {
+        // E.g. `<meta property="article:published_time" content="2025-08-30T22:19:15+02:00">`
+        if property.starts_with("og:") || property.starts_with("article:") {
             let content = match dom_tag.attributes().get("content") {
                 Some(Some(content)) => content.as_utf8_str().into_owned(),
                 _ => String::new(),
@@ -41,7 +42,12 @@ pub fn extract_opengraph_tag(node: NodeHandle, parser: &Parser) -> Option<Opengr
         let name = name.as_utf8_str().to_string();
 
         // E.g. `<meta name="twitter:title" content="Hello world" />`
-        if name.starts_with("twitter:") {
+        // E.g. `<meta name="article:modified_time" content="2025-08-30T16:41:58.259Z">`
+        // E.g. `<meta name="cXenseParse:publishtime" content="2025-08-30T11:04:56.930Z">`
+        if name.starts_with("twitter:")
+            || name.starts_with("article:")
+            || name.starts_with("cXenseParse:")
+        {
             let content = match dom_tag.attributes().get("content") {
                 Some(Some(content)) => content.as_utf8_str().into_owned(),
                 _ => String::new(),
