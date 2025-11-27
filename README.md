@@ -38,12 +38,32 @@ Using the URL for this GitHub repository as an example:
 ```json
 [
   {
+    "property": "twitter:image",
+    "content": "https://opengraph.githubassets.com/3237a9a882e420d99c3e74a10d9386e5bdce72efe8f025e37e0317833a47629d/rosvik/og.248.no"
+  },
+  {
+    "property": "twitter:site",
+    "content": "@github"
+  },
+  {
+    "property": "twitter:card",
+    "content": "summary_large_image"
+  },
+  {
+    "property": "twitter:title",
+    "content": "GitHub - rosvik/og.248.no: Get Open Graph data from a given URL"
+  },
+  {
+    "property": "twitter:description",
+    "content": "Get Open Graph data from a given URL. Contribute to rosvik/og.248.no development by creating an account on GitHub."
+  },
+  {
     "property": "og:image",
-    "content": "https://opengraph.githubassets.com/653e157339e477585055cd0dd6ba082fe5bbe6b6838232a33127a38c20ab70f7/rosvik/og.248.no"
+    "content": "https://opengraph.githubassets.com/3237a9a882e420d99c3e74a10d9386e5bdce72efe8f025e37e0317833a47629d/rosvik/og.248.no"
   },
   {
     "property": "og:image:alt",
-    "content": "Contribute to rosvik/og.248.no development by creating an account on GitHub."
+    "content": "Get Open Graph data from a given URL. Contribute to rosvik/og.248.no development by creating an account on GitHub."
   },
   {
     "property": "og:image:width",
@@ -63,7 +83,7 @@ Using the URL for this GitHub repository as an example:
   },
   {
     "property": "og:title",
-    "content": "GitHub - rosvik/og.248.no"
+    "content": "GitHub - rosvik/og.248.no: Get Open Graph data from a given URL"
   },
   {
     "property": "og:url",
@@ -71,7 +91,7 @@ Using the URL for this GitHub repository as an example:
   },
   {
     "property": "og:description",
-    "content": "Contribute to rosvik/og.248.no development by creating an account on GitHub."
+    "content": "Get Open Graph data from a given URL. Contribute to rosvik/og.248.no development by creating an account on GitHub."
   }
 ]
 ```
