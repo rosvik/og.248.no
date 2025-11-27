@@ -2,11 +2,11 @@ mod cache;
 mod handlers;
 
 use axum::{
+    Extension, Json, Router,
     extract::Query,
     http::StatusCode,
     response::{Html, IntoResponse},
     routing::get,
-    Extension, Json, Router,
 };
 use cache::OpengraphCache;
 use handlers::fetch_opengraph_tags;
