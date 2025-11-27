@@ -47,11 +47,13 @@ async fn get_opengraph_tags(
     cache: axum::extract::Extension<Arc<Mutex<OpengraphCache>>>,
 ) -> impl IntoResponse {
     let url = query.url;
+
     let cache_hit = cache.lock().await.get_from_cache(&url);
     if let Some(tags) = cache_hit {
-        println!("Cache hit for {url}");
+        println!("CACHE: {url} ({} tags)", tags.len());
         return (StatusCode::OK, Json(tags));
     }
+
     let tags = match fetch_opengraph_tags(url.clone()).await {
         Ok(tags) => tags,
         Err(e) => {
@@ -59,6 +61,7 @@ async fn get_opengraph_tags(
             return (StatusCode::INTERNAL_SERVER_ERROR, Json(Vec::new()));
         }
     };
+    println!("FETCHED: {url} ({} tags)", tags.len());
 
     // Fire and forget cache addition
     let tags_clone = tags.clone();
