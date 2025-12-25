@@ -1,5 +1,6 @@
 mod cache;
 mod handlers;
+mod second_level_domain;
 
 use axum::{
     Extension, Json, Router,
@@ -44,15 +45,15 @@ struct GetOpengraphTagsParameters {
 }
 async fn get_opengraph_tags(
     Query(query): Query<GetOpengraphTagsParameters>,
-    cache: axum::extract::Extension<Arc<Mutex<OpengraphCache>>>,
+    _cache: axum::extract::Extension<Arc<Mutex<OpengraphCache>>>,
 ) -> impl IntoResponse {
     let url = query.url;
 
-    let cache_hit = cache.lock().await.get_from_cache(&url);
-    if let Some(tags) = cache_hit {
-        println!("CACHE: {url} ({} tags)", tags.len());
-        return (StatusCode::OK, Json(tags));
-    }
+    // let cache_hit = cache.lock().await.get_from_cache(&url);
+    // if let Some(tags) = cache_hit {
+    //     println!("CACHE: {url} ({} tags)", tags.len());
+    //     return (StatusCode::OK, Json(tags));
+    // }
 
     let tags = match fetch_opengraph_tags(url.clone()).await {
         Ok(tags) => tags,
@@ -64,10 +65,10 @@ async fn get_opengraph_tags(
     println!("FETCHED: {url} ({} tags)", tags.len());
 
     // Fire and forget cache addition
-    let tags_clone = tags.clone();
-    tokio::spawn(async move {
-        cache.lock().await.add_to_cache(url, tags_clone);
-    });
+    // let tags_clone = tags.clone();
+    // tokio::spawn(async move {
+    //     cache.lock().await.add_to_cache(url, tags_clone);
+    // });
 
     (StatusCode::OK, Json(tags))
 }
