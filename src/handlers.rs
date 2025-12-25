@@ -69,7 +69,6 @@ const DEFAULT_USER_AGENT: &str =
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 14.7; rv:136.0) Gecko/20100101 Firefox/136.0";
 
 fn get_user_agent(url: &str) -> &'static str {
-    println!("DEFAULT: {}", reqwest::header::USER_AGENT.as_str());
     let url = match Url::parse(url) {
         Ok(url) => url,
         Err(_) => return DEFAULT_USER_AGENT,
